@@ -1,11 +1,10 @@
 Exec { path => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/opt/ruby/bin/' }
 
-# Mozilla package
-$moz_packages = ['nginx']
+# Mozilla packages to install
+$moz_packages = ['nginx', 'gunicorn', 'logstash', 'python26', 'python26-setuptools', 'zeromq']
 
 # Add rpmforge
 exec { 'install-rpmforge-gpg-key':
-    # http URL's work too, but would't be as secure as veryfying the key first.
     command => 'rpm --import http://apt.sw.be/RPM-GPG-KEY.dag.txt',
     unless  => 'rpm -q --quiet gpg-pubkey-6b8d79e6',
 }

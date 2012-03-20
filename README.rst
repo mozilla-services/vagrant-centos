@@ -12,6 +12,12 @@ Installing
 **Note**: VirtualBox 4.1.x currently `seems to have a nasty kernel panic issue with Lion <https://www.virtualbox.org/ticket/9359>`_
 , use the second link provided in 2.1 to install the previous version which is stable in OSX Lion.
 
+**VPN Note**: Using the Mozilla repo's requires access to the Mozilla MPT VPN. The connection must be
+active before provisioning the machine. If there's intermittent RPM repo failures, add a line to your
+/etc/hosts file like so::
+
+    63.245.209.182 mrepo.mozilla.org
+
 1. Install Vagrant: http://downloads.vagrantup.com/tags/v1.0.1
 
 2. Install Virtualbox (**do not install this in OSX Lion**): http://www.virtualbox.org/wiki/Downloads
