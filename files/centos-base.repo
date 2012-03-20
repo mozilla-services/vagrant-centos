@@ -1,0 +1,5 @@
+[centos-base]
+name=CentOS-6-Base
+baseurl=http://mrepo.mozilla.org/mrepo/$releasever-$basearch/RPMS.centos-base/
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-6

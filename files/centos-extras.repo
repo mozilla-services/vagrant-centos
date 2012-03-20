@@ -1,0 +1,5 @@
+[centos-extras]
+name=CentOS-6-Extras
+baseurl=http://mrepo.mozilla.org/mrepo/$releasever-$basearch/RPMS.centos-extras/
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-6
