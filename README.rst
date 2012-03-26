@@ -28,11 +28,11 @@ active before provisioning the machine. If there's intermittent RPM repo failure
 
        $ vagrant box add centos-60-x86_64 http://dl.dropbox.com/u/1627760/centos-6.0-x86_64.box
 
-4. Clone the repo, edit Vagrantfile as needed, and run!::
+4. Run the following::
 
        $ mkdir myproj
        $ curl --silent https://nodeload.github.com/mozilla-services/vagrant-centos/tarball/master | tar zxv --directory=myproj --strip-components=1
        $ cd myproj
-       $ vim myproj/manifests/default.pp  # Edit as needed
+       $ vim manifests/default.pp  # Edit as needed
        $ vagrant up
 
