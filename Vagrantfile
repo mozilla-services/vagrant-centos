@@ -4,5 +4,4 @@ Vagrant::Config.run do |config|
     puppet.manifests_path = "manifests"
     puppet.manifest_file  = "default.pp"
   end
-  config.vm.customize ["modifyvm", :id, "--memory", "512"]
 end
