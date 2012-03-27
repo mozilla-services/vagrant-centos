@@ -1,7 +1,7 @@
 Exec { path => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/opt/ruby/bin/' }
 
 # Mozilla packages to install
-$moz_packages = ['nginx', 'gunicorn', 'logstash', 'python26', 'python26-setuptools', 'zeromq']
+$moz_packages = ['nginx', 'gunicorn', 'logstash', 'python26', 'python26-setuptools', 'rubygem-petef-statsd', 'zeromq']
 
 # Add rpmforge
 exec { 'install-rpmforge-gpg-key':
@@ -34,3 +34,10 @@ package { $moz_packages:
     ensure  => present,
     require => [File['mozilla-services.repo'], File['packages-mozilla.repo']]
 }
+
+file { 'logstash.conf':
+    ensure  => present,
+    path    => "/etc/logstash.conf",
+    source  => "/vagrant/files/logstash.conf",
+}
+
