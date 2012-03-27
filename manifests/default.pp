@@ -41,3 +41,11 @@ file { 'logstash.conf':
     source  => "/vagrant/files/logstash.conf",
 }
 
+file { 'logstash_plugins':
+    ensure  => directory,
+    path    => "/opt/logstash/plugins",
+    source  => "/vagrant/files/plugins",
+    recurse => true,
+    force   => true,
+    require => Package["logstash"],
+}
