@@ -4,20 +4,39 @@ Exec { path => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/us
 $moz_packages = ['nginx', 'gunicorn', 'logstash', 'python26', 'python26-setuptools', 'rubygem-petef-statsd', 'zeromq']
 
 yumrepo { 'mozilla-services':
-    baseurl => "http://mrepo.mozilla.org/mrepo/$releasever-$basearch/RPMS.mozilla-services",
-    enabled => 1,
+    baseurl     => 'http://mrepo.mozilla.org/mrepo/$releasever-$basearch/RPMS.mozilla-services',
+    enabled     => 1,
     gpgcheck    => 0,
 }
 
 yumrepo { 'packages-mozilla':
-    baseurl => "http://mrepo.mozilla.org/mrepo/$releasever-$basearch/RPMS.mozilla",
-    enabled => 1,
+    baseurl     => 'http://mrepo.mozilla.org/mrepo/$releasever-$basearch/RPMS.mozilla',
+    enabled     => 1,
     gpgcheck    => 0,
 }
 
 package { $moz_packages:
     ensure  => present,
     require => [Yumrepo['mozilla-services'], Yumrepo['packages-mozilla']]
+}
+
+file {'nginx.conf':
+    ensure  => present,
+    path    => "/etc/nginx/nginx.conf",
+    source  => "/vagrant/files/nginx.conf",
+    require => Package["nginx"],
+}
+
+file {'default.conf':
+    ensure  => absent,
+    path    => "/etc/nginx/conf.d/default.conf",
+    require => Package["nginx"],
+}
+
+service {'nginx':
+    ensure      => running,
+    enable     => true,
+    subscribe   => File["nginx.conf"],
 }
 
 file { 'logstash.conf':
