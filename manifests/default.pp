@@ -20,6 +20,28 @@ package { $moz_packages:
     require => [Yumrepo['mozilla-services'], Yumrepo['packages-mozilla']]
 }
 
+## Local RPM Repo
+
+yumrepo { 'local-rpms':
+    baseurl     => 'file:///local_repo',
+    enabled     => 1,
+    gpgcheck    => 0,
+}
+
+file {'local_repo':
+    ensure  => directory,
+    recurse => true,
+    path    => "/local_repo",
+    source  => "/vagrant/local_repo",
+}
+
+exec {'update_repo':
+    command     => "createrepo /local_repo",
+    subscribe   =>  File["local_repo"],
+}
+
+## Nginx Setup
+
 file {'nginx.conf':
     ensure  => present,
     path    => "/etc/nginx/nginx.conf",
@@ -38,6 +60,8 @@ service {'nginx':
     enable     => true,
     subscribe   => File["nginx.conf"],
 }
+
+## Logstash Setup
 
 file { 'logstash.conf':
     ensure  => present,
