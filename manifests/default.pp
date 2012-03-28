@@ -52,16 +52,23 @@ file { 'logstash_plugins':
 
 file { 'logstash_init':
     ensure  => present,
-    path    => "/etc/init.d/logstash",
-    source  => "/vagrant/files/logstash.init.sh",
+    path    => "/etc/init/logstash.conf",
+    source  => "/vagrant/files/logstash.init.conf",
     owner   => 'root',
     group   => 'root',
-    mode    => 755,
+    mode    => 644,
 }
 
-service {"logstash":
-    name    => $service_name,
-    ensure  => running,
-    enable  => true,
-    require => [Package["logstash"], File["logstash_init"], File["logstash.conf"], File["logstash_plugins"]],
+exec { 'update_init':
+    command => "/sbin/initctl reload-configuration",
+    subscribe   => File["logstash_init"],
+    require => File["logstash_plugins"],
 }
+
+exec { 'start_logstash':
+    command => "/sbin/initctl restart logstash || /sbin/initctl start logstash",
+    subscribe   => Exec["update_init"],
+}
+
+
+Package["logstash"] -> File["logstash.conf"] -> File["logstash_init"] -> File["logstash_plugins"]
