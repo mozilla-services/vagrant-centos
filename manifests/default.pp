@@ -49,3 +49,19 @@ file { 'logstash_plugins':
     force   => true,
     require => Package["logstash"],
 }
+
+file { 'logstash_init':
+    ensure  => present,
+    path    => "/etc/init.d/logstash",
+    source  => "/vagrant/files/logstash.init.sh",
+    owner   => 'root',
+    group   => 'root',
+    mode    => 755,
+}
+
+service {"logstash":
+    name    => $service_name,
+    ensure  => running,
+    enable  => true,
+    require => [Package["logstash"], File["logstash_init"], File["logstash.conf"], File["logstash_plugins"]],
+}
