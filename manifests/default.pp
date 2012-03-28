@@ -1,7 +1,7 @@
 Exec { path => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/opt/ruby/bin/' }
 
 # Mozilla packages to install
-$moz_packages = ['nginx', 'gunicorn', 'logstash', 'python26', 'python26-setuptools', 'rubygem-petef-statsd', 'zeromq']
+$moz_packages = ['createrepo', 'nginx', 'gunicorn', 'logstash', 'python26', 'python26-setuptools', 'rubygem-petef-statsd', 'zeromq']
 
 yumrepo { 'mozilla-services':
     baseurl     => 'http://mrepo.mozilla.org/mrepo/$releasever-$basearch/RPMS.mozilla-services',
@@ -39,6 +39,8 @@ exec {'update_repo':
     command     => "createrepo /local_repo",
     subscribe   =>  File["local_repo"],
 }
+
+Package["createrepo"] -> File["local_repo"] -> Exec["update_repo"]
 
 ## Nginx Setup
 
