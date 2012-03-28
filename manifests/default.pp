@@ -47,7 +47,6 @@ file { 'logstash_plugins':
     source  => "/vagrant/files/plugins",
     recurse => true,
     force   => true,
-    require => Package["logstash"],
 }
 
 file { 'logstash_init':
