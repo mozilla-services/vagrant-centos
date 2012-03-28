@@ -33,7 +33,7 @@ DAEMON=`which java`
 CONFIG_DIR=/etc/logstash.conf
 LOGFILE="/var/log/logstash.log"
 PATTERNSPATH="/opt/logstash/patterns"
-JARNAME="/opt/logstash/logstash-*.jar"
+JARNAME=logstash-1.1.0-monolithic.jar
 ARGS="-Xmx$JAVAMEM -Xms$JAVAMEM -jar ${JARNAME} agent --config ${CONFIG_DIR} --log ${LOGFILE} --pluginpath /opt/logstash/plugins"
 SCRIPTNAME=/etc/init.d/logstash
 base=logstash
@@ -85,10 +85,12 @@ case "$1" in
   start)
     echo -n "Starting $DESC: "
     do_start
+    touch /var/lock/subsys/$JARNAME
     ;;
   stop)
     echo -n "Stopping $DESC: "
     do_stop
+    rm /var/lock/subsys/$JARNAME
     ;;
   restart|reload)
     echo -n "Restarting $DESC: "
@@ -96,7 +98,7 @@ case "$1" in
     do_start
     ;;
   status)
-    status -p $PID
+    status $base
     ;;
   *)
     echo "Usage: $SCRIPTNAME {start|stop|status|restart}" >&2
