@@ -108,4 +108,4 @@ exec { 'start_logstash':
 }
 
 
-Package["logstash"] -> File["logstash.conf"] -> File["logstash_init"] -> File["logstash_plugins"]
+Package["zeromq" -> Package["logstash"] -> File["logstash.conf"] -> File["logstash_init"] -> File["logstash_plugins"]
