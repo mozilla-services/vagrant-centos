@@ -40,7 +40,8 @@ exec {'update_repo':
     subscribe   =>  File["local_repo"],
 }
 
-Package["createrepo"] -> File["local_repo"] -> Exec["update_repo"]
+# Make sure not to install the yum repo until its completely ready
+Package["createrepo"] -> File["local_repo"] -> Exec["update_repo"] -> Yumrepo['local-rpms']
 
 ## Nginx Setup
 
