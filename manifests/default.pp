@@ -88,6 +88,13 @@ file { 'logstash_init':
     mode    => 644,
 }
 
+file {
+    "/usr/lib64/libzmq.so":
+        ensure  => link,
+        target  => "/usr/lib64/libzmq.so.1",
+        require => Package["zeromq"];
+}
+
 exec { 'update_init':
     command => "/sbin/initctl reload-configuration",
     subscribe   => File["logstash_init"],
