@@ -40,6 +40,11 @@ exec {'update_repo':
     subscribe   =>  File["local_repo"],
 }
 
+exec {'clear_metadata':
+    command     => "yum clean metadata",
+    subscribe   => File["local_repo"],
+}
+
 # Make sure not to install the yum repo until its completely ready
 Package["createrepo"] -> File["local_repo"] -> Exec["update_repo"] -> Yumrepo['local-rpms']
 
