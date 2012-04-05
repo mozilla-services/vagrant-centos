@@ -17,7 +17,15 @@ yumrepo { 'packages-mozilla':
 
 package { $moz_packages:
     ensure  => present,
-    require => [Yumrepo['mozilla-services'], Yumrepo['packages-mozilla']]
+    require => [Host["mrepo"], Yumrepo['mozilla-services'], Yumrepo['packages-mozilla']]
+}
+
+# From remote, one of the mrepo's doesn't work, so we hardcode in the one that
+# does work reliably over the VPN
+host { 'mrepo':
+    ensure  => present,
+    name    => "mrepo.mozilla.org",
+    ip      => "63.245.209.182",
 }
 
 ## Local RPM Repo
@@ -113,4 +121,4 @@ exec { 'start_logstash':
 }
 
 
-Package["zeromq"] -> Package["logstash"] -> File["logstash.conf"] -> File["logstash_init"] -> File["logstash_plugins"]
+Host["mrepo"] -> Package["zeromq"] -> Package["logstash"] -> File["logstash.conf"] -> File["logstash_init"] -> File["logstash_plugins"]
